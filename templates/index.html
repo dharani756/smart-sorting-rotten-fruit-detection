@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Smart Sorting - Rotten Fruit Detection</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"
+        rel="stylesheet">
+
+  <!-- Main CSS -->
+  <link href="{{ url_for('static', filename='assets/css/style.css') }}" rel="stylesheet">
+
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+<header id="header">
+  <div class="navbar">
+    <div class="logo">
+      <h1><a href="/">Smart Sorting</a></h1>
+    </div>
+
+    <nav class="nav-menu">
+      <ul>
+        <li class="active"><a href="/">Home</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li><a href="/portfolio">Portfolio</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+
+<!-- ================= HERO ================= -->
+<section id="hero">
+  <div class="hero-container">
+    <h1>Welcome to Smart Sorting</h1>
+    <h2>AI Powered Rotten Fruit & Vegetable Detection</h2>
+    <a href="#upload" class="btn-get-started">Get Started</a>
+  </div>
+</section>
+
+
+<!-- ================= UPLOAD SECTION ================= -->
+<section id="upload" class="upload-section">
+
+  <div class="container">
+
+    <div class="section-title">
+      <h2>Analyze Produce</h2>
+      <p>Upload an image to detect whether it is Fresh or Rotten.</p>
+    </div>
+
+    <div class="upload-card">
+
+      <!-- ===== IMAGE UPLOAD FORM ===== -->
+      <form action="/" method="post" enctype="multipart/form-data">
+
+        <!-- Hidden real input -->
+        <input type="file" id="fileInput" name="file" required hidden>
+
+        <!-- Custom Choose Image Button -->
+        <label for="fileInput" class="btn-upload">
+          Choose Image
+        </label>
+
+        <br><br>
+
+        <!-- Selected file name -->
+        <p id="fileName" style="color:#555;font-size:14px;"></p>
+
+        <br>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn-upload">
+          Analyze Image
+        </button>
+
+      </form>
+
+
+      <!-- ===== RESULT SECTION ===== -->
+      {% if prediction %}
+      <div class="result-section">
+
+        <h3>Analysis Result</h3>
+
+        <!-- Uploaded Image -->
+        <div class="result-image">
+          <img src="{{ uploaded_image_url }}" width="300">
+        </div>
+
+        <!-- Prediction -->
+        <div class="prediction-text" style="margin-top:15px;">
+          <strong>Prediction:</strong> {{ prediction }}
+        </div>
+
+        <!-- Description -->
+        {% if description %}
+        <div class="description-box"
+             style="margin-top:15px;
+                    background:#e8f5e9;
+                    padding:15px;
+                    border-radius:8px;
+                    border-left:5px solid #2e7d32;
+                    text-align:left;">
+
+          <h4>Detailed Analysis</h4>
+          <p>{{ description | safe }}</p>
+
+        </div>
+        {% endif %}
+
+        <!-- Confidence Bar -->
+        {% if confidence %}
+        <div class="confidence-bar-container"
+             style="margin-top:20px;background:#ddd;border-radius:8px;">
+
+          <div class="confidence-bar"
+               style="width: {{ confidence|default('0%') }};
+                      background:#4caf50;
+                      color:white;
+                      padding:10px;
+                      border-radius:8px;
+                      text-align:center;">
+
+            {{ confidence }} Confidence
+
+          </div>
+        </div>
+        {% endif %}
+
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+<footer id="footer">
+  <div class="container">
+    <p>&copy; 2026 <strong>Smart Sorting</strong>. All Rights Reserved</p>
+  </div>
+</footer>
+
+
+<!-- ================= SCRIPT ================= -->
+<script>
+document.getElementById("fileInput").addEventListener("change", function () {
+    const fileName = this.files[0]
+        ? this.files[0].name
+        : "No file selected";
+    document.getElementById("fileName").textContent = fileName;
+});
+</script>
+
+</body>
+</html>
